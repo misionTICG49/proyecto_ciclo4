@@ -1,0 +1,9 @@
+git init
+git add README.md
+git commit -m "first commit"
+git branch -M main
+git remote add origin https://github.com/misionTICG49/proyecto_ciclo4_back
+git branch -m master main
+git fetch --prune
+git symbolic-ref refs/remotes/origin/HEAD refs/remotes/origin/main
+git branch -a
