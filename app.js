@@ -5,10 +5,11 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var database = require("./config/database")
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+var auth = require("./auth/main_auth");
+
 var testadorRouter = require('./routes/testador.router');
 var herederoRouter = require('./routes/heredero.router');
+var usuarioRouter = require('./routes/usuario.router');
 
 var app = express();
 
@@ -22,11 +23,15 @@ app.use(express.static(path.join(__dirname, 'public')));
 //Mongo connection
 database.mongoConnect();
 
+app.use('/', usuarioRouter);
+
+app.use(auth);
+
 //Router
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
+
 app.use('/testador', testadorRouter);
 app.use('/heredero', herederoRouter);
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

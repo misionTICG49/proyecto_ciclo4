@@ -1,5 +1,8 @@
 const Testador = require("../models/testador.model");
+const Usuario = require("../models/usuario.model");
 const crypto = require("crypto");
+
+
 let response ={
     msg: "",
     exito: false
@@ -17,19 +20,26 @@ exports.create = function(req,res){
         testamento: req.body.testamento
     })
 
-    testador.save(function(err){
-        if(err){
-            console.error(err), 
-            response.exito = false,
-            response.msg = "Error al guardar el testador"
-            res.json(response)
-            return;
-        }
-
-        response.exito = true,
-        response.msg = "El testador se guardó correctamente"
-        res.json(response)
+    let usuario = new Usuario({
+        _id: testador._id,
+        usuario: testador.identificacion,
+        pass: testador.pass
     })
+
+    testador.save(
+        usuario.save(function(err){
+            if(err){
+                console.error(err), 
+                response.exito = false,
+                response.msg = "Error al guardar el testador"
+                res.json(response)
+                return;
+            }
+
+            response.exito = true,
+            response.msg = "El testador se guardó correctamente"
+            res.json(response)
+        }))
 }
 
 exports.find = function(req,res){
@@ -57,6 +67,12 @@ exports.update = function(req,res){
         testamento: req.body.testamento
     }
 
+    let usuario = {
+        //_id: testador._id,
+        usuario: testador.identificacion,
+        pass: testador.pass
+    }
+
     Testador.findByIdAndUpdate(req.params.id, {$set: testador}, function(err){
         if(err){
             console.error(err), 
@@ -66,9 +82,18 @@ exports.update = function(req,res){
             return;
         }
 
-        response.exito = true,
-        response.msg = "Testador modificado correctamente"
-        res.json(response)
+        Usuario.findByIdAndUpdate(req.params.id, {$set: usuario}, function(err){
+            if(err){
+                console.error(err), 
+                response.exito = false,
+                response.msg = "Error al modificar el testador"
+                res.json(response)
+                return;
+            }
+            response.exito = true,
+            response.msg = "Testador modificado correctamente"
+            res.json(response)
+        })
     })
 }
 
@@ -82,8 +107,17 @@ exports.remove = function(req,res){
             return;
         }
 
-        response.exito = true,
-        response.msg = "Testador eliminado correctamente"
-        res.json(response)
+        Usuario.findByIdAndRemove({_id: req.params.id}, function(err){
+            if(err){
+                console.error(err), 
+                response.exito = false,
+                response.msg = "Error al eliminar el testador"
+                res.json(response)
+                return;
+            }
+            response.exito = true,
+            response.msg = "Testador eliminado correctamente"
+            res.json(response)
+        })
     })
 }
