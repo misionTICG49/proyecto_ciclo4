@@ -3,6 +3,7 @@ const Usuario = require("../models/usuario.model");
 const crypto = require("crypto");
 
 
+
 let response ={
     msg: "",
     exito: false
@@ -13,11 +14,11 @@ exports.create = function(req,res){
         nombre: req.body.nombre,
         apellido: req.body.apellido,
         identificacion: req.body.identificacion,
-        telefono: req.body.telefono,
+        /*telefono: req.body.telefono,*/
         email: req.body.email,
         pass: crypto.createHash("sha512").update(req.body.pass).digest("hex"),
-        fechaEnvio: req.body.fechaEnvio,
-        testamento: req.body.testamento
+        /*fechaEnvio: req.body.fechaEnvio,
+        testamento: req.body.testamento*/
     })
 
     let usuario = new Usuario({
@@ -31,13 +32,13 @@ exports.create = function(req,res){
             if(err){
                 console.error(err), 
                 response.exito = false,
-                response.msg = "Error al guardar el testador"
+                response.msg = "Error al guardar el usuario."
                 res.json(response)
                 return;
             }
 
             response.exito = true,
-            response.msg = "El testador se guardó correctamente"
+            response.msg = "El usuario se guardó correctamente"
             res.json(response)
         }))
 }
@@ -60,11 +61,11 @@ exports.update = function(req,res){
         nombre: req.body.nombre,
         apellido: req.body.apellido,
         identificacion: req.body.identificacion,
-        telefono: req.body.telefono,
+        //telefono: req.body.telefono,
         email: req.body.email,
         pass: crypto.createHash("sha512").update(req.body.pass).digest("hex"),
-        fechaEnvio: req.body.fechaEnvio,
-        testamento: req.body.testamento
+        /*fechaEnvio: req.body.fechaEnvio,
+        testamento: req.body.testamento*/
     }
 
     let usuario = {
@@ -77,7 +78,7 @@ exports.update = function(req,res){
         if(err){
             console.error(err), 
             response.exito = false,
-            response.msg = "Error al modificar el testador"
+            response.msg = "Ha ocurrido un problema al modificar el usuario"
             res.json(response)
             return;
         }
@@ -86,12 +87,12 @@ exports.update = function(req,res){
             if(err){
                 console.error(err), 
                 response.exito = false,
-                response.msg = "Error al modificar el testador"
+                response.msg = "Ha ocurrido un problema al modificar el usuario"
                 res.json(response)
                 return;
             }
             response.exito = true,
-            response.msg = "Testador modificado correctamente"
+            response.msg = "Sus datos han sido guardados correctamente"
             res.json(response)
         })
     })
@@ -102,7 +103,7 @@ exports.remove = function(req,res){
         if(err){
             console.error(err), 
             response.exito = false,
-            response.msg = "Error al eliminar el testador"
+            response.msg = "Error al eliminar el usuario"
             res.json(response)
             return;
         }
@@ -111,12 +112,12 @@ exports.remove = function(req,res){
             if(err){
                 console.error(err), 
                 response.exito = false,
-                response.msg = "Error al eliminar el testador"
+                response.msg = "Error al eliminar el usuario"
                 res.json(response)
                 return;
             }
             response.exito = true,
-            response.msg = "Testador eliminado correctamente"
+            response.msg = "El usuario ha sido eliminado correctamente"
             res.json(response)
         })
     })

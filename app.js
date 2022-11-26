@@ -6,6 +6,7 @@ var logger = require('morgan');
 var database = require("./config/database")
 
 var auth = require("./auth/main_auth");
+var cors = require('cors');
 
 var testadorRouter = require('./routes/testador.router');
 var herederoRouter = require('./routes/heredero.router');
@@ -19,6 +20,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(cors());
 
 //Mongo connection
 database.mongoConnect();
@@ -29,8 +31,8 @@ app.use(auth);
 
 //Router
 
-app.use('/testador', testadorRouter);
-app.use('/heredero', herederoRouter);
+app.use('/usuarios', testadorRouter);
+app.use('/contactos', herederoRouter);
 
 
 // catch 404 and forward to error handler
